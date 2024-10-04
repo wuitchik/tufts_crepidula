@@ -1,0 +1,25 @@
+------------------------------,--------------------
+www.electricblue.eu, Portugal
+------------------------------,--------------------
+Pulse version,V2.3
+------------------------------,--------------------
+Device,Pulse
+Rate_Hz,20
+UTC,-5.00
+Day light saving time,Yes
+Window_Sec,5
+Recording mode,Continuos
+Record[min],NA
+Sleep[min],NA
+S1,Crep_1
+S2,Crep_2
+S3,Crep_3
+S4,Crep_4
+S5,Crep_5
+S6,Crep_6
+S7,Crep_7
+S8,Crep_8
+S9,Crep_9
+S10,Crep_10
+------------------------------,--------------------
+Time,Crep_1,Crep_2,Crep_3,Crep_4,Crep_5,Crep_6,Crep_7,Crep_8,Crep_9,Crep_10

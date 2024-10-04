@@ -1,0 +1,25 @@
+------------------------------,--------------------
+www.electricblue.eu, Portugal
+------------------------------,--------------------
+Pulse version,V2.3
+------------------------------,--------------------
+Device,Pulse
+Rate_Hz,25
+UTC,0.00
+Day light saving time,No
+Window_Sec,5
+Recording mode,Continuos
+Record[min],NA
+Sleep[min],NA
+S1,Mussel_1
+S2,Mussel_2
+S3,Mussel_3
+S4,Mussel_4
+S5,Mussel_5
+S6,Mussel_6
+S7,Mussel_7
+S8,Mussel_8
+S9,S9
+S10,S10
+------------------------------,--------------------
+Time,Mussel_1,Mussel_2,Mussel_3,Mussel_4,Mussel_5,Mussel_6,Mussel_7,Mussel_8,S9,S10
