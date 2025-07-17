@@ -2,8 +2,8 @@ devtools::load_all("Scripts/heartbeatr-main")
 library(heartbeatr)
 library(ggplot2)
 
-paths <- dir("Heart_Rate/raw_heart_data/06_20_2025_exp/heartbeatr_format", full.names = TRUE)
-# paths <- pulse_example()
+paths <- dir("Raw_Data/raw_heart_data/06_20_2025_exp/heartbeatr_format", full.names = TRUE)
+paths <- pulse_example()
 
 # pulse_data <- pulse_read(
 #   paths, 
@@ -69,12 +69,14 @@ for (i in 1:10) {
   
   # Save the plot
   ggsave(
-    filename = paste0("heartbeatr_plot_06_20_25 Subsetted", id, ".png"),
+    filename = paste0("heartbeatr_plot_06_20_2025 Subsetted", id, ".png"),
     plot = p,
-    path = "./Figures/06_20_25_exp/heartbeatr_graphs"
+    path = "./Figures/06_20_2025_exp/heartbeatr_graphs"
   )
 }
 
+
+pulse_plot(heart_rates2, ID = "c06", bpm = TRUE)
 
 
 # only_c01 <- heart_rates2[heart_rates2$id == "c01",] 
