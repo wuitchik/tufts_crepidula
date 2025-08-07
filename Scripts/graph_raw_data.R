@@ -27,7 +27,7 @@ read_crep_data <- function(file_path) {
 }
 
 #The day the experiment started
-date <- "06_27_2025"
+date <- "06_20_2025"
 #The associated temperature the incubator was set at 
 temp <- "42.5"
 sensor_names = paste("Crepidula Sensor", 1:10)
