@@ -5,6 +5,7 @@ library(zoo)
 library(tidyverse)
 
 
+
 read_crep_data <- function(file_path) {
   column_names <- c("Time", paste0("Crep_", 1:10))
   first_line <- readLines(file_path, n = 1)
@@ -92,10 +93,14 @@ find_threshold <- function(curr_crep, threshold, threshold_duration = 1) {
   return(NA)  # No valid dip found
 }
 
-crep_cols <- paste0("Crep_", 1:10)
+#Skip Crep_5
+crep_cols <- c(paste0("Crep_", 1:4), paste0("Crep_", 6:10))
+# crep_cols <- c(paste0("Crep_", 1:2))
 
 #5 minute window size
 window_size <- 6000
+
+all_plots <- list()
 
 # Loop through each column
 for (colname in crep_cols) {
@@ -108,7 +113,7 @@ for (colname in crep_cols) {
     )
   
   scale_factor <- max(curr_crep$amplitude_mean, na.rm = TRUE) / max(curr_crep$amplitude_sd, na.rm = TRUE)
-  
+  print(scale_factor)
   #No threshold graph
   
   # p <- ggplot(curr_crep, aes(x = elapsed_minutes)) +
@@ -139,38 +144,74 @@ for (colname in crep_cols) {
     threshold_point <- curr_crep[threshold_index, ]
     threshold_time <- threshold_point$elapsed_minutes
     
+    force(scale_factor)
+    force(threshold_time)
+    force(threshold)
+    
     
     p <- ggplot(curr_crep, aes(x = elapsed_minutes)) +
-      geom_line(aes(y = amplitude), color = "blue") +
+      geom_line(aes(y = amplitude), color = rgb(0, 0, 1, 0.2)) +
       geom_line(aes(y = amplitude_sd * scale_factor), color = "red") +
       scale_y_continuous(
         name = "Amplitude",
-        sec.axis = sec_axis(~ . / scale_factor, name = "Standard Deviation")
+        sec.axis = sec_axis(~ . / scale_factor, name = "SD")
       ) +
       geom_vline(
-        aes(xintercept = threshold_time),
-        color = "darkgreen"
+       xintercept = threshold_time,
+        color = "darkgreen",
+       linewidth = 1.0,
+       linetype = "dashed"
       ) +
-      annotate("text", x = threshold_time, y = 100, label = paste("Threshold:", round(threshold, 1), "Time:", round(threshold_time, 1))) +
-      labs(title = paste(colname, temp, date), 
-           x = "Time Since Experiment Start (Minutes)") +
+      annotate("text", x = threshold_time + 80, y = 1800, 
+                                  label = paste("Threshold:", round(threshold), 
+                                        "\nTime:", round(threshold_time)), size = 3) +
+      labs(title = paste(colname), 
+           x = "Time (Min)") +
       theme_minimal() +
       theme(
+        panel.grid = element_blank(),
+        plot.title = element_text(size = 10),
+        axis.line.y.left = element_line(color="grey"),
+        axis.line.y.right = element_line(color="grey"),
+        axis.line.x = element_line(color = "black"),
+        axis.ticks.y.left = element_line(color = "blue"),
+        axis.ticks.y.right = element_line(color = "red"),
         axis.title.y.left = element_text(color = "blue"),
         axis.title.y.right = element_text(color = "red")
       )
     
+    all_plots[[colname]] <- p + NULL
     
-    ggsave(filename = paste(colname, temp, date, "threshold_firstencounter_analysis_raw.png", sep="_"),
-           path = paste0("./Figures/", date, "_exp/analysis_raw_data_graphs"),
-           plot = p, bg = "white")
-    
+    # ggsave(filename = paste(colname, temp, date, "test.png", sep="_"),
+    #        path = paste0("./Figures/", date, "_exp/analysis_raw_data_graphs"),
+    #        plot = p, bg = "white")
+    # 
   } else {
     print(paste0("No valid sustained dip below threshold in ", colname, " found."))
   }
   
 
 }
+
+third_plots <- all_plots[1:9]
+
+p0 <- ggplot() + labs(title=paste(date, temp), x = "Time (Min)")
+
+p1 <- wrap_plots(third_plots, ncol=3)
+
+
+final_plot <- p1 + plot_layout(axes = "collect_x", axis_titles = "collect")
+
+final_plot
+
+
+
+ggsave(filename = paste(temp, date, "all_combined_threshold_firstencounter_analysis_raw.png", sep="_"),
+       path = paste0("./Figures/", date, "_exp/analysis_raw_data_graphs"),
+       plot = final_plot, bg = "white")
+
+all_plots[[1]]
+
 
 
 # library(pracma)
